@@ -54,7 +54,7 @@ expenses = [100, 250, 75, 500]
 
 # Accessing an item
 
-print(expenses[0])       # 100
+print(expenses[0])  # 100
 
 # Modifying an item
 
@@ -172,14 +172,15 @@ print(coordinates[0])
 
 # This would cause an error because tuples are immutable:
 
-#
 
 # coordinates[0] = 50
 
 # Tuple unpacking
 
+
 def get_user():
     return "Sehrish", 7
+
 
 name, semester = get_user()
 
@@ -202,7 +203,7 @@ A set:
 
 numbers = {1, 2, 3, 4}
 
-numbers_with_duplicates = {1, 2, 2, 3, 3, 4}
+numbers_with_duplicates = {1, 2, 3, 4}
 
 print(numbers_with_duplicates)
 
@@ -215,10 +216,10 @@ print(numbers_with_duplicates)
 # ------------------------------------------------------------
 
 emails = [
-"[a@gmail.com](mailto:a@gmail.com)",
-"[b@gmail.com](mailto:b@gmail.com)",
-"[a@gmail.com](mailto:a@gmail.com)",
-"[c@gmail.com](mailto:c@gmail.com)"
+    "[a@gmail.com](mailto:a@gmail.com)",
+    "[b@gmail.com](mailto:b@gmail.com)",
+    "[a@gmail.com](mailto:a@gmail.com)",
+    "[c@gmail.com](mailto:c@gmail.com)",
 ]
 
 unique_emails = set(emails)
@@ -270,11 +271,7 @@ A dictionary stores data as:
 key -> value
 """
 
-user = {
-"name": "Sehrish",
-"semester": 7,
-"role": "developer"
-}
+user = {"name": "Sehrish", "semester": 7, "role": "developer"}
 
 # Access value
 
@@ -306,11 +303,7 @@ expense_as_list = ["Food", 500, "2026-10-05"]
 
 # More descriptive
 
-expense_as_dict = {
-"category": "Food",
-"amount": 500,
-"date": "2026-10-05"
-}
+expense_as_dict = {"category": "Food", "amount": 500, "date": "2026-10-05"}
 
 """
 With the list, we have to remember:
@@ -343,18 +336,8 @@ For example:
 """
 
 expenses = [
-{
-"id": 1,
-"title": "Lunch",
-"category": "Food",
-"amount": 500
-},
-{
-"id": 2,
-"title": "Uber",
-"category": "Transport",
-"amount": 350
-}
+    {"id": 1, "title": "Lunch", "category": "Food", "amount": 500},
+    {"id": 2, "title": "Uber", "category": "Transport", "amount": 350},
 ]
 
 """
@@ -376,21 +359,9 @@ This is a LIST OF DICTIONARIES.
 # ============================================================
 
 students = [
-{
-"name": "Ali",
-"age": 21,
-"skills": ["Python", "SQL"]
-},
-{
-"name": "Sara",
-"age": 22,
-"skills": ["JavaScript", "React"]
-},
-{
-"name": "Ahmed",
-"age": 20,
-"skills": ["Python", "Django"]
-}
+    {"name": "Ali", "age": 21, "skills": ["Python", "SQL"]},
+    {"name": "Sara", "age": 22, "skills": ["JavaScript", "React"]},
+    {"name": "Ahmed", "age": 20, "skills": ["Python", "Django"]},
 ]
 
 # ------------------------------------------------------------
@@ -529,19 +500,11 @@ print(students[2]["skills"][1])
 # ============================================================
 
 company = {
-"name": "TechCorp",
-"employees": [
-{
-"name": "Ali",
-"role": "Developer",
-"languages": ["Python", "SQL"]
-},
-{
-"name": "Sara",
-"role": "Designer",
-"languages": ["Figma", "HTML"]
-}
-]
+    "name": "TechCorp",
+    "employees": [
+        {"name": "Ali", "role": "Developer", "languages": ["Python", "SQL"]},
+        {"name": "Sara", "role": "Designer", "languages": ["Figma", "HTML"]},
+    ],
 }
 
 # Q1
@@ -598,9 +561,9 @@ Answers:
 3. list
    """
 
-print(type(company["employees"]))                    # list
-print(type(company["employees"][0]))                # dict
-print(type(company["employees"][0]["languages"]))   # list
+print(type(company["employees"]))  # list
+print(type(company["employees"][0]))  # dict
+print(type(company["employees"][0]["languages"]))  # list
 
 # ============================================================
 
@@ -753,10 +716,10 @@ print(result)
 # ============================================================
 
 expenses = [
-{"category": "Food", "amount": 500},
-{"category": "Transport", "amount": 300},
-{"category": "Food", "amount": 700},
-{"category": "Shopping", "amount": 1000}
+    {"category": "Food", "amount": 500},
+    {"category": "Transport", "amount": 300},
+    {"category": "Food", "amount": 700},
+    {"category": "Shopping", "amount": 1000},
 ]
 
 # Problem:
@@ -764,9 +727,7 @@ expenses = [
 # Get the amounts of Food expenses.
 
 food_amounts = [
-expense["amount"]
-for expense in expenses
-if expense["category"] == "Food"
+    expense["amount"] for expense in expenses if expense["category"] == "Food"
 ]
 
 print(food_amounts)
@@ -775,7 +736,6 @@ print(food_amounts)
 
 # Important:
 
-#
 
 # expense["amount"]
 
@@ -783,7 +743,6 @@ print(food_amounts)
 
 # +-- WHAT goes into the new list
 
-#
 
 # for expense in expenses
 
@@ -791,7 +750,6 @@ print(food_amounts)
 
 # +-- WHERE the items come from
 
-#
 
 # if expense["category"] == "Food"
 
@@ -812,11 +770,7 @@ Give me the category of every expense
 whose amount is greater than 400.
 """
 
-result = [
-expense["category"]
-for expense in expenses
-if expense["amount"] > 400
-]
+result = [expense["category"] for expense in expenses if expense["amount"] > 400]
 
 print(result)
 
@@ -839,9 +793,7 @@ Expected:
 """
 
 result = [
-expense["amount"] * 2
-for expense in expenses
-if expense["category"] == "Food"
+    expense["amount"] * 2 for expense in expenses if expense["category"] == "Food"
 ]
 
 print(result)
@@ -862,10 +814,7 @@ Dictionary comprehension syntax:
 
 numbers = [1, 2, 3, 4]
 
-squares = {
-x: x * x
-for x in numbers
-}
+squares = {x: x * x for x in numbers}
 
 print(squares)
 
@@ -888,15 +837,12 @@ print(squares)
 # ============================================================
 
 expenses = [
-{"category": "Food", "amount": 500},
-{"category": "Transport", "amount": 300},
-{"category": "Shopping", "amount": 1000}
+    {"category": "Food", "amount": 500},
+    {"category": "Transport", "amount": 300},
+    {"category": "Shopping", "amount": 1000},
 ]
 
-result = {
-expense["category"]: expense["amount"]
-for expense in expenses
-}
+result = {expense["category"]: expense["amount"] for expense in expenses}
 
 print(result)
 
@@ -924,10 +870,7 @@ Set comprehension:
 Example:
 """
 
-amounts = {
-expense["amount"]
-for expense in expenses
-}
+amounts = {expense["amount"] for expense in expenses}
 
 print(amounts)
 
@@ -953,15 +896,12 @@ Dictionary comprehension:
 # ============================================================
 
 students = [
-{"name": "Ali", "marks": 85},
-{"name": "Sara", "marks": 92},
-{"name": "Ahmed", "marks": 76}
+    {"name": "Ali", "marks": 85},
+    {"name": "Sara", "marks": 92},
+    {"name": "Ahmed", "marks": 76},
 ]
 
-students_dict = {
-student["name"]: student["marks"]
-for student in students
-}
+students_dict = {student["name"]: student["marks"] for student in students}
 
 print(students_dict)
 
@@ -982,10 +922,10 @@ print(students_dict)
 # ============================================================
 
 students = [
-{"name": "Ali", "marks": 85},
-{"name": "Sara", "marks": 92},
-{"name": "Ahmed", "marks": 76},
-{"name": "Zain", "marks": 95}
+    {"name": "Ali", "marks": 85},
+    {"name": "Sara", "marks": 92},
+    {"name": "Ahmed", "marks": 76},
+    {"name": "Zain", "marks": 95},
 ]
 
 """
@@ -1003,9 +943,7 @@ Expected:
 """
 
 top_students = {
-student["name"]: student["marks"]
-for student in students
-if student["marks"] > 90
+    student["name"]: student["marks"] for student in students if student["marks"] > 90
 }
 
 print(top_students)
