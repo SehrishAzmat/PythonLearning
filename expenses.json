@@ -8,5 +8,10 @@
         "category": "Food",
         "amount": 440.0,
         "description": "raw eggs and a pouch and  a sprite"
+    },
+    {
+        "category": "food",
+        "amount": 1200.0,
+        "description": "aserdtfyguh"
     }
 ]
