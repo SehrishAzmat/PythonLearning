@@ -1,6 +1,7 @@
 import json
+from pathlib import Path
 
-FILE_NAME = "expenses.json"
+FILE_NAME = Path(__file__).parent / "expenses.json"
 
 
 def load_expenses():

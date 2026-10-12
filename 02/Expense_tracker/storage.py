@@ -4,7 +4,7 @@ from typing import Any
 
 from models import Expense
 
-FILE_NAME = Path("expenses.json")
+FILE_NAME = Path(__file__).parent / "expenses.json"
 
 
 def load_expenses() -> list[Expense]:
