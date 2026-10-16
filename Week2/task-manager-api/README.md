@@ -1,326 +1,456 @@
 # Task Manager API
 
-A Django backend project developed as part of the **4-Week Plan: Intern to Professional Full Stack Python Developer**.
+A learning project built during **Week 2** of the *4-Week Plan: Intern
+to Professional Full Stack Python Developer*.
 
-**Current milestone:** Week 2 — Monday: HTTP, REST API Design, and Django Foundations.
+The goal of this README is to help me understand the backend codebase:
+where things live, how a request moves through Django, what each
+directory and file is responsible for, and how the project is growing
+each day.
 
-## 1. Project Overview
+**Current database:** MySQL\
+**Project location:** `PythonLearning/Week2/task-manager-api/`\
+**Approach:** One project for the whole week. Each daily milestone
+extends this codebase.
 
-The Task Manager API is the starting point for a backend application that will eventually support users, projects, and tasks.
+------------------------------------------------------------------------
 
-The Monday milestone establishes the Django project structure, URL routing, JSON responses, initial endpoints, automated tests, and development workflow.
+## 1. How the Backend Fits Together
 
-### Current Features
+A backend receives a request, decides what code should handle it, may
+read or change data in the database, and returns a response.
 
-- Django project setup and configuration.
-- A dedicated `tasks` application.
-- Health-check endpoint.
-- Task-list endpoint returning sample JSON data.
-- URL routing between the project and application.
-- Django's built-in administration interface.
-- Initial database migrations.
-- Automated tests for the endpoints.
-- Project documentation and dependency management.
+In this Django project, the flow is generally:
 
-**Current limitation:** The task-list endpoint returns hard-coded sample data. Database-backed task management, CRUD operations, authentication, permissions, and PostgreSQL integration are planned for subsequent milestones.
+``` text
+Client / Browser
+      |
+      | HTTP request
+      v
+config/urls.py
+      |
+      | routes request to the relevant app
+      v
+tasks/urls.py
+      |
+      v
+tasks/views.py
+      |
+      | uses models / ORM when database data is needed
+      v
+tasks/models.py  <---->  MySQL database
+      |
+      v
+HTTP response (HTML or JSON, depending on the view)
+      |
+      v
+Client / Browser
+```
 
-## 2. Technology Stack
+Not every request follows every step. For example, a simple health-check
+view may return a response without querying the database.
 
-- **Language:** Python
-- **Framework:** Django 5.2
-- **Initial database:** SQLite
-- **API response format:** JSON
-- **Testing:** Django TestCase and test client
-- **Version control:** Git and GitHub
-- **Development environment:** Python virtual environment
+### What each part means
 
-## 3. Project Structure
+-   **URL configuration** decides which view handles a request.
+-   **A view** contains the request-handling logic.
+-   **A model** describes a type of data and its database relationships.
+-   **The Django ORM** lets Python code query and update the database.
+-   **MySQL** stores the persistent records.
+-   **Templates**, if used, render HTML pages.
+-   **Serializers**, when introduced with Django REST Framework, will
+    validate and convert data for API requests and responses.
+-   **Authentication and permissions** determine who is making a request
+    and what that person is allowed to do.
 
-```text
+------------------------------------------------------------------------
+
+## 2. Project Directory Guide
+
+The project is inside the existing `PythonLearning` Git repository. We
+use the same `task-manager-api` directory throughout Week 2 instead of
+creating a new project for each day.
+
+``` text
 PythonLearning/
 ├── Week1/
 ├── Week2/
 │   └── task-manager-api/
 │       ├── config/
-│       │   ├── __init__.py
 │       │   ├── settings.py
 │       │   ├── urls.py
 │       │   ├── asgi.py
 │       │   └── wsgi.py
 │       ├── tasks/
 │       │   ├── migrations/
-│       │   ├── __init__.py
 │       │   ├── admin.py
 │       │   ├── apps.py
 │       │   ├── models.py
 │       │   ├── tests.py
 │       │   ├── urls.py
 │       │   └── views.py
-│       ├── .venv/
-│       ├── .gitignore
-│       ├── db.sqlite3
 │       ├── manage.py
 │       ├── requirements.txt
-│       ├── README.md
+│       ├── studyguide.md
+│       └── README.md
 └── README.md
 ```
 
-The `.venv/` directory and `db.sqlite3` are local development files. They should be excluded from Git when appropriate.
+This is the main structure, not an exhaustive listing. Additional files
+or directories may be added as the project grows.
 
-The project lives inside the existing `PythonLearning` repository. A separate nested Git repository is not required.
+### `config/` --- project-wide configuration
 
-## 4. File Responsibilities
+  -----------------------------------------------------------------------
+  File                    Responsibility          When I might open it
+  ----------------------- ----------------------- -----------------------
+  `settings.py`           Installed apps,         When configuring MySQL,
+                          middleware, database    adding Django REST
+                          connection, templates,  Framework, or changing
+                          and other project       project settings
+                          settings                
 
-| File or directory | Purpose |
-|---|---|
-| `config/settings.py` | Project settings, installed apps, middleware, and database configuration |
-| `config/urls.py` | Main URL routing configuration |
-| `config/asgi.py` | ASGI application entry point |
-| `config/wsgi.py` | WSGI application entry point |
-| `tasks/views.py` | Request handlers and JSON responses |
-| `tasks/urls.py` | Routes for task-related endpoints |
-| `tasks/models.py` | Database model definitions |
-| `tasks/tests.py` | Automated endpoint tests |
-| `tasks/admin.py` | Registration of application models in Django admin |
-| `tasks/apps.py` | Application configuration |
-| `tasks/migrations/` | Database schema migration files |
-| `manage.py` | Command-line interface for Django management commands |
-| `requirements.txt` | Python dependencies |
+  `urls.py`               Main URL routing;       When adding or tracing
+                          connects top-level      a URL
+                          paths to views or app   
+                          URL configurations      
 
-## 5. Prerequisites
+  `asgi.py`               ASGI application entry  When working with
+                          point                   ASGI-compatible
+                                                  deployment or
+                                                  asynchronous serving
 
-Install the following before running the project:
+  `wsgi.py`               WSGI application entry  When working with a
+                          point                   WSGI-compatible
+                                                  deployment
+  -----------------------------------------------------------------------
 
-- Python 3.12 or later.
-- Git.
-- Visual Studio Code or another code editor.
-- Windows Command Prompt or PowerShell.
+### `tasks/` --- application code
 
-## 6. Local Setup
+  -----------------------------------------------------------------------
+  File or directory       Responsibility          When I might open it
+  ----------------------- ----------------------- -----------------------
+  `models.py`             Defines data models,    When changing projects,
+                          fields, and             tasks, status choices,
+                          relationships           or relationships
 
-Run the commands from the `task-manager-api` directory.
+  `views.py`              Handles requests and    When changing what
+                          returns responses       happens after a request
+                                                  reaches the application
 
-### Step 1: Navigate to the project
+  `urls.py`               Maps app-specific URL   When adding or tracing
+                          paths to views          task/project routes
 
-```bat
-cd C:\Users\SehrishAzmat\Downloads\PythonProjects\PythonLearning\Week2\task-manager-api
-```
+  `admin.py`              Registers models and    When changing how
+                          configures their Django models appear in
+                          Admin presentation      `/admin/`
 
-### Step 2: Activate the virtual environment
+  `tests.py`              Automated tests for the When checking that
+                          app                     behaviour continues to
+                                                  work after changes
 
-For Windows Command Prompt:
+  `apps.py`               Application             When inspecting Django
+                          configuration           app setup
 
-```bat
-.venv\Scripts\activate.bat
-```
+  `migrations/`           Files that describe     When reviewing changes
+                          database schema changes generated by
+                                                  `makemigrations`
+  -----------------------------------------------------------------------
 
-If the virtual environment does not exist yet, create it first:
+As API work grows, additional files may be introduced---for example,
+`serializers.py`, `permissions.py`, or other modules. Their
+responsibilities will be documented here when they are added.
 
-```bat
-py -m venv .venv
-.venv\Scripts\activate.bat
-```
+### Files at the project root
 
-The terminal should display `(.venv)` before the current directory.
+  -----------------------------------------------------------------------
+  File                                Responsibility
+  ----------------------------------- -----------------------------------
+  `manage.py`                         Runs Django management commands
+                                      such as `runserver`, `migrate`, and
+                                      `test`
 
-### Step 3: Install dependencies
+  `requirements.txt`                  Records Python package dependencies
 
-If `requirements.txt` already exists:
+  `studyguide.md`                     Detailed learning notes for a
+                                      particular lesson or day
 
-```bat
-python -m pip install -r requirements.txt
-```
+  `README.md`                         Project navigation guide, setup
+                                      instructions, and the ongoing Week
+                                      2 progress log
 
-Otherwise, install Django and generate the file:
+  `.gitignore`                        Specifies local or generated files
+                                      Git should ignore
+  -----------------------------------------------------------------------
 
-```bat
-python -m pip install "Django>=5.2,<6.0"
-python -m pip freeze > requirements.txt
-```
+The `.venv/` directory, credentials, secrets, and local-only database
+files should not be committed accidentally.
 
-### Step 4: Check the project
+------------------------------------------------------------------------
 
-```bat
+## 3. How to Navigate a Feature Through the Code
+
+When I want to understand or change a feature, I should follow its path
+through the backend rather than opening files randomly.
+
+For example, to investigate a task-related URL:
+
+1.  Open `config/urls.py` to see how top-level URLs are connected.
+2.  Open `tasks/urls.py` to find the app route, if the route is defined
+    there.
+3.  Open `tasks/views.py` to inspect the function or class handling the
+    request.
+4.  If it reads or changes stored data, inspect the relevant model in
+    `tasks/models.py`.
+5.  Check `admin.py` if the behaviour concerns Django Admin.
+6.  Check `tests.py` and run the relevant tests after changing the code.
+
+The exact path depends on how the route is currently implemented. As the
+project evolves, some responsibilities may move into additional modules.
+
+### Common development commands
+
+Run these from the `task-manager-api` directory with the project's
+virtual environment activated.
+
+``` powershell
+# Check Django project configuration
 python manage.py check
-```
 
-Expected result:
+# See which migrations are applied
+python manage.py showmigrations
 
-```text
-System check identified no issues (0 silenced).
-```
+# Generate migration files after changing models
+python manage.py makemigrations
 
-### Step 5: Apply database migrations
-
-```bat
+# Apply migrations to the configured database
 python manage.py migrate
-```
 
-This applies the migration files for Django's installed applications and prepares the database tables they require.
+# Open the Django interactive shell
+python manage.py shell
 
-### Step 6: Run automated tests
-
-```bat
+# Run tests for the tasks app
 python manage.py test tasks
-```
 
-The five Monday tests should pass.
-
-### Step 7: Start the development server
-
-```bat
+# Start the local development server
 python manage.py runserver
 ```
 
-The local development server will normally be available at:
+Open the local server at `http://127.0.0.1:8000/` and Django Admin at
+`http://127.0.0.1:8000/admin/`, when the corresponding routes are
+configured.
 
-`http://127.0.0.1:8000/`
+Only create a superuser if an appropriate account does not already exist
+in the database configured for this project.
 
-Press `CTRL+C` in the terminal to stop the server.
+------------------------------------------------------------------------
 
-## 7. API Endpoints
+## 4. Database and Model Notes
 
-| HTTP method | Endpoint | Purpose | Expected status |
-|---|---|---|---|
-| GET | `/health/` | Check application health | 200 OK |
-| GET | `/api/tasks/` | Return the sample task list | 200 OK |
-| GET | `/admin/` | Open Django administration | Login required |
+The project uses Django models and the ORM with MySQL.
 
-### Health Check
+-   A **model** describes the fields and relationships for a type of
+    record.
+-   A **QuerySet** represents a database query that can retrieve or
+    filter records.
+-   A **ForeignKey** commonly represents many records related to one
+    record---for example, tasks belonging to a project.
+-   A **ManyToManyField** represents a relationship where multiple
+    records can be connected on both sides---for example, project
+    membership.
+-   A **migration** records a database schema change and can apply that
+    change to the configured database.
 
-**URL:** `http://127.0.0.1:8000/health/`
+### Understanding table names
 
-Example response:
+Django commonly derives table names from the app label and model name. A
+`Task` model in the `tasks` app normally maps to `tasks_task`; a
+`Project` model normally maps to `tasks_project`. A many-to-many
+relationship may create a separate intermediary table.
 
-```json
-{
-  "status": "ok",
-  "message": "Task Manager API is running"
-}
-```
+The MySQL schema also shows tables named `tasks` and `projects`. Their
+origin has not yet been confirmed. Before renaming or deleting any
+table, inspect `tasks/models.py`, any model `Meta.db_table` settings,
+the migration files, and the database configuration. Similar names alone
+do not prove that tables are duplicates.
 
-The health-check endpoint confirms that the application can receive a request and return a response.
+------------------------------------------------------------------------
 
-### Task List
+## 5. Current Behaviour and Known Follow-ups
 
-**URL:** `http://127.0.0.1:8000/api/tasks/`
+The following reflects what has been explored during the learning
+sessions; run the project and tests to verify the current checkout.
 
-Example response:
+-   The Django development server runs.
+-   Django Admin is accessible.
+-   Users, groups, projects, and tasks have been managed through the
+    admin interface.
+-   The current interface allows editing projects and tasks.
+-   Task editing includes changing the status and other available
+    fields.
+-   MySQL is configured and migrations have been applied.
 
-```json
-{
-  "tasks": [
-    {
-      "id": 1,
-      "title": "Complete Django setup",
-      "completed": false
-    },
-    {
-      "id": 2,
-      "title": "Learn HTTP methods",
-      "completed": true
-    }
-  ]
-}
-```
+### Important issue: project permissions
 
-These are sample tasks defined in the view. They are not currently saved in the database.
+Testing showed that a user could delete a project owned by the
+superuser. This is an authorization flaw that still needs to be
+addressed.
 
-**Note:** Use the trailing slash in `/api/tasks/`. Django's usual `APPEND_SLASH` configuration can redirect `/api/tasks` to `/api/tasks/` when a matching route exists.
+A working edit/delete interface does not by itself make an operation
+secure. The server must verify who is making the request and whether
+that user is allowed to perform the operation. Project creation must
+also prevent users from assigning projects to arbitrary owners without
+appropriate permission.
 
-## 8. Automated Testing
+This will be a focus of the upcoming authentication and permissions
+work.
 
-Run:
+### Other follow-up
 
-```bat
-python manage.py test tasks
-```
+The origins and use of similarly named MySQL tables still need to be
+checked before any database cleanup.
 
-The five tests cover:
+------------------------------------------------------------------------
 
-1. The health endpoint returns HTTP 200 and the expected status.
-2. The task-list endpoint returns HTTP 200.
-3. The task-list endpoint returns two sample tasks.
-4. The task objects contain the expected fields.
-5. The GET-only task-list endpoint rejects POST requests with HTTP 405.
+## 6. Week 2 Direction
 
-The tests use Django's test client, so a separate development server does not need to be running.
+The week builds on one codebase, with each day adding another layer of
+backend understanding and implementation.
 
-## 9. Django Administration
+  --------------------------------------------------------------------------------
+  Day               Focus                     How it builds on   Status
+                                              the project        
+  ----------------- ------------------------- ------------------ -----------------
+  Monday            HTTP, REST concepts,      Established the    Completed
+                    Django project/app        Django project and 
+                    structure, URLs, views,   request/response   
+                    JSON responses, initial   foundations        
+                    tests                                        
 
-Django provides a built-in admin interface and authentication framework.
+  Tuesday           Django ORM, models,       Added and explored Completed
+                    relationships,            database-backed    
+                    migrations, MySQL, and    project/task       
+                    Django Admin              management         
 
-To create an administrator account, if one does not already exist:
+  Wednesday         Django REST Framework,    Develop API        Next
+                    serializers,              operations and     
+                    authentication, and       address            
+                    permissions               authorization      
 
-```bat
-python manage.py createsuperuser
-```
+  Thursday          Validation, filtering,    Make API behaviour Planned
+                    pagination,               more reliable and  
+                    configuration, and API    easier to use      
+                    documentation                                
 
-Then open:
+  Friday            Testing, coverage, code   Verify the week's  Planned
+                    review, and introductory  work and improve   
+                    caching/background-task   maintainability    
+                    concepts                                     
+  --------------------------------------------------------------------------------
 
-`http://127.0.0.1:8000/admin/`
+The status should be updated only after each milestone's work has been
+implemented and checked.
 
-Django's built-in authentication models provide Users and Groups. Users represent accounts; groups collect permissions that can be assigned to multiple users.
+------------------------------------------------------------------------
 
-The admin interface is available because the Django admin application is enabled and its URL is configured in `config/urls.py`. Migrations prepare the required database tables.
+## 7. Week 2 Daily Progress Log
 
-Our own task and project models will be introduced and registered in later milestones.
+This section records **what changed, what was learned, what remains, and
+what comes next**. Keep previous entries and append or update the next
+day's section as the same project develops.
 
-**Security:** Do not share administrator credentials or expose the development server publicly.
+### Monday --- Django Foundations
 
-## 10. Git and GitHub Workflow
+**Status:** Completed
 
-The project belongs to the existing `PythonLearning` repository.
+**Focus:** HTTP and REST foundations, Django project and app structure,
+URL routing, views, JSON responses, initial endpoint tests, and
+development workflow.
 
-From the `task-manager-api` directory, verify the repository root:
+**Progress recorded:** - Created and configured the Django project and
+`tasks` application. - Added initial health-check and task-list
+endpoints. - Explored URL routing and request/response behaviour. -
+Added initial automated endpoint tests. - Set up project documentation
+and dependencies.
 
-```bat
-git rev-parse --show-toplevel
-git status
-```
+**What this established:** The basic structure of a Django backend and
+the path from a URL to a view and its response.
 
-The repository root should be the `PythonLearning` directory.
+**Next:** Add database-backed models and learn how Django represents
+relationships between records.
 
-Do not initialize another Git repository inside `task-manager-api`.
+### Tuesday --- Django ORM and Models
 
-After reviewing the changed files, commit the intended work. For example, from the repository root:
+**Status:** Completed
 
-```bat
-git add Week2/task-manager-api
-git commit -m "docs: complete Week 2 Monday Django foundations"
-git push
-```
+**Focus:** ORM, models, relationships, migrations, MySQL, and Django
+Admin.
 
-Use a feature branch and open a pull request if that is the workflow being followed for the internship. If the remote branch has not been configured, check `git remote -v` and the current branch before pushing.
+**Progress recorded:** - Connected Django to MySQL and resolved the
+missing MySQL driver. - Applied the required database migrations. -
+Worked with the `Project` and `Task` models and their configured
+relationships. - Registered and managed models through Django Admin. -
+Created and managed users, groups, projects, and tasks. - Tested project
+and task editing, including task status changes. - Identified table
+names in MySQL that need further investigation.
 
-Keep `.venv/`, local database files, and secrets out of Git. Check `.gitignore` and `git status` before committing.
+**What this established:** How Django models map to database tables, how
+related records are represented, and how stored records can be managed
+through Django.
 
-## 11. Week 2 Roadmap
+**Outstanding:** - Enforce project ownership and prevent unauthorized
+project deletion. - Confirm the origin of similarly named MySQL tables
+before changing them. - Add or review automated tests for model
+behaviour and permissions.
 
-| Day | Planned focus | Main outcome |
-|---|---|---|
-| Monday | HTTP, REST, Django fundamentals, routes, views, and tests | Working starter project and endpoints |
-| Tuesday | Django ORM, models, relationships, migrations, admin, and PostgreSQL | Users, projects, and tasks models |
-| Wednesday | Django REST Framework, serializers, authentication, and permissions | Secured API operations |
-| Thursday | Validation, filtering, pagination, configuration, and API documentation | More complete and maintainable API |
-| Friday | Testing, coverage, code review, and introductory caching/background-task concepts | Tested and documented weekly deliverable |
+**Study notes:** See `studyguide.md`.
 
-These are planned learning milestones; features listed for later days are not necessarily implemented yet.
+**Next:** Introduce Django REST Framework and build API operations with
+authentication and server-side permissions.
 
-## 12. Monday Completion Checklist
+### Wednesday --- Django REST Framework
 
-- [ ] Django project and `tasks` app exist.
-- [ ] Virtual environment is working.
-- [ ] Django dependencies are recorded in `requirements.txt`.
-- [ ] `tasks` is registered in `INSTALLED_APPS`.
-- [ ] Health endpoint returns HTTP 200.
-- [ ] Task-list endpoint returns the expected JSON.
-- [ ] Initial database migrations have been applied.
-- [ ] Five automated tests pass.
-- [ ] `README.md` and `studyguide.md` are saved.
-- [ ] `.gitignore` excludes local environment files.
-- [ ] Changes are committed and pushed to the existing repository.
-- [ ] The required pull request and daily log are complete.
+**Status:** Planned --- update after completing the work.
+
+**Record during the day:** - What concepts were studied: - What files or
+features changed: - Commands and tests run: - What was verified: -
+Issues still open: - Commit or GitHub update:
+
+### Thursday --- Validation and API Quality
+
+**Status:** Planned --- update after completing the work.
+
+**Record during the day:** - What concepts were studied: - What files or
+features changed: - Commands and tests run: - What was verified: -
+Issues still open: - Commit or GitHub update:
+
+### Friday --- Testing and Weekly Review
+
+**Status:** Planned --- update after completing the work.
+
+**Record during the day:** - What concepts were studied: - What files or
+features changed: - Commands and tests run: - What was verified: -
+Issues still open: - Commit or GitHub update:
+
+------------------------------------------------------------------------
+
+## 8. Current Project Snapshot
+
+**Completed:** Monday's Django foundations and Tuesday's ORM, models,
+relationships, migrations, MySQL, and admin work.
+
+**Current priorities:** 1. Add server-side authorization for project and
+task operations. 2. Investigate the origin of similarly named MySQL
+tables without deleting data prematurely. 3. Build on the existing
+project with Django REST Framework. 4. Add and run automated tests as
+new behaviour is introduced.
+
+**Next step:** Wednesday --- serializers, API endpoints, authentication,
+and permissions.
+
+Update this snapshot as the week progresses.
+
+------------------------------------------------------------------------
 
 ## Author
 
@@ -328,4 +458,5 @@ Sehrish
 
 ## License
 
-This is an internship learning project. Add a license if the project will be distributed as open-source software.
+This is an internship learning project. Add a license if the project
+will be distributed as open-source software.
