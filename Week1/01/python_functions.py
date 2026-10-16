@@ -14,15 +14,19 @@
 
 # Basic syntax:
 
+
 def function_name():
     # code
     pass
 
+
 # Defining a function does NOT execute it.
 # The function runs only when it is called.
 
+
 def greet():
     print("Hello Sehrish")
+
 
 # Function call:
 greet()
@@ -34,8 +38,10 @@ greet()
 # Parameter:
 # A variable written inside the function definition.
 
+
 def greet_with_name(name):  # name = parameter
     print("Hello", name)
+
 
 # Argument:
 # The actual value passed when calling the function.
@@ -43,6 +49,7 @@ def greet_with_name(name):  # name = parameter
 greet_with_name("Sehrish")  # "Sehrish" = argument
 
 # Example:
+
 
 def add(a, b):  # a and b are parameters
     return a + b
@@ -58,6 +65,7 @@ print(result)
 # print() displays a value.
 # return sends a value back to the caller.
 
+
 def show_name():
     print("Sehrish")
 
@@ -71,6 +79,7 @@ name = get_name()
 print(name)
 
 # A function without an explicit return returns None.
+
 
 def greet_user(name):
     print("Hello", name)
@@ -91,6 +100,7 @@ print(result)
 # return → give something back to the caller
 # return also immediately exits the function.
 
+
 def check_age(age):
     if age >= 18:
         return "Adult"
@@ -102,6 +112,7 @@ print(check_age(21))
 # ============================================================
 # 4. USING RETURN FOR REUSABLE CALCULATIONS
 # ============================================================
+
 
 def calculate_discount(price, discount):
     final_price = price - (price * discount / 100)
@@ -129,6 +140,7 @@ print(final_price)
 
 # Positional arguments are matched according to position.
 
+
 def introduce(name, age):
     print(name)
     print(age)
@@ -145,6 +157,7 @@ introduce("Sehrish", 21)
 
 # Keyword arguments are matched using parameter names.
 
+
 def introduce(name, age):
     print(name)
     print(age)
@@ -160,6 +173,7 @@ introduce(age=21, name="Sehrish")
 
 # A default parameter has a value that is used
 # when the caller does not provide an argument.
+
 
 def greet(name="User"):
     print("Hello", name)
@@ -183,6 +197,7 @@ greet()
 
 # CORRECT:
 
+
 def example(age, name="User"):
     print(age, name)
 
@@ -192,6 +207,7 @@ def example(age, name="User"):
 # ============================================================
 
 # Positional arguments must come before keyword arguments.
+
 
 def student(name, age, city):
     print(name, age, city)
@@ -209,6 +225,7 @@ student("Sehrish", age=21, city="Lahore")
 # *args allows a function to receive an arbitrary number
 # of positional arguments.
 
+
 def show_numbers(*args):
     print(args)
 
@@ -224,6 +241,7 @@ show_numbers(10, 20, 30, 40)
 # ============================================================
 # 10. USING *args IN CALCULATIONS
 # ============================================================
+
 
 def calculate_total(*amounts):
     total = 0
@@ -242,6 +260,7 @@ print(result)
 # ============================================================
 # 11. *args WITH NORMAL PARAMETERS
 # ============================================================
+
 
 def calculate(category, *amounts):
     total = sum(amounts)
@@ -263,6 +282,7 @@ print(result)
 # **kwargs allows a function to receive an arbitrary number
 # of keyword arguments.
 
+
 def show_info(**kwargs):
     print(kwargs)
 
@@ -279,6 +299,7 @@ show_info(name="Sehrish", age=21)
 # 13. LOOPING THROUGH **kwargs
 # ============================================================
 
+
 def show_info(**kwargs):
     for key, value in kwargs.items():
         print(key, "=", value)
@@ -294,6 +315,7 @@ show_info(name="Sehrish", age=21, city="Lahore")
 # ============================================================
 # 14. **kwargs FOR EXPENSE DETAILS
 # ============================================================
+
 
 def add_expense(**expense):
     return expense
@@ -320,6 +342,7 @@ print(result)
 # normal parameters
 # *args
 # **kwargs
+
 
 def create_expense(category, amount, *tags, **details):
     return {
@@ -364,6 +387,7 @@ print(expense)
 
 # In a function definition, *args PACKS values into a tuple.
 
+
 def numbers(*args):
     print(args)
 
@@ -371,6 +395,7 @@ def numbers(*args):
 numbers(1, 2, 3)
 
 # At a function call, * can UNPACK an iterable.
+
 
 def add_values(a, b, c):
     return a + b + c
@@ -385,6 +410,7 @@ print(result)
 # ============================================================
 # 17. ** UNPACKING
 # ============================================================
+
 
 def introduce(name, age):
     print(name, age)
@@ -403,6 +429,7 @@ introduce(**person)
 
 # LOCAL SCOPE
 # A variable created inside a function is local to that function.
+
 
 def example():
     x = 10
@@ -468,6 +495,7 @@ print(x)
 
 # A function can be defined inside another function.
 
+
 def outer():
     def inner():
         print("Inside inner")
@@ -487,6 +515,7 @@ outer()
 # variables from its enclosing function even after the
 # outer function has finished executing.
 
+
 def outer(message):
     def inner():
         print(message)
@@ -504,6 +533,7 @@ greet()
 # ============================================================
 # 23. CLOSURE PRACTICAL EXAMPLE
 # ============================================================
+
 
 def multiplier(n):
     def multiply(x):
@@ -534,6 +564,7 @@ print(triple(10))
 # - passed to other functions
 # - returned from functions
 
+
 def greet():
     print("Hello")
 
@@ -550,6 +581,7 @@ say_hello()
 # ============================================================
 # 25. STORING FUNCTIONS IN A LIST
 # ============================================================
+
 
 def add(a, b):
     return a + b
@@ -576,6 +608,7 @@ print(operations[1](2, 3))
 # OR
 # 2. returns another function
 
+
 def apply(operation, value):
     return operation(value)
 
@@ -595,6 +628,7 @@ print(result)
 # ============================================================
 # 27. FUNCTION RETURNING ANOTHER FUNCTION
 # ============================================================
+
 
 def multiplier(n):
     def multiply(x):
@@ -617,6 +651,7 @@ square = lambda x: x * x
 print(square(5))
 
 # Equivalent normal function:
+
 
 def square_function(x):
     return x * x
@@ -670,6 +705,7 @@ print(squared)
 # Functions allow us to divide an expense tracker
 # into reusable responsibilities.
 
+
 def calculate_total(expenses):
     total = 0
     for expense in expenses:
@@ -689,6 +725,7 @@ print(total)
 # ============================================================
 # 33. FILTER EXPENSES USING A FUNCTION
 # ============================================================
+
 
 def expensive_expenses(expenses, minimum_amount):
     result = []
@@ -727,6 +764,7 @@ print(sorted_expenses)
 
 # Example:
 
+
 def calculate_total(expenses):
     return sum(expense["amount"] for expense in expenses)
 
@@ -762,6 +800,7 @@ def calculate_total(expenses):
 # ============================================================
 # 37. FINAL FUNCTION EXAMPLE — COMBINING CONCEPTS
 # ============================================================
+
 
 def create_expense(category, amount, *tags, **details):
     return {
