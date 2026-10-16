@@ -7,12 +7,9 @@ A personal Python learning and practice repository containing programming concep
 ```text
 PythonLearning/
 │
-├── 01_Basics/
-├── 02_Conditions/
-├── 03_Loops/
-├── 04_Functions/
-├── 05_OOP/
-├── 06_File_Handling/
+├── Week1/
+├── Week2/
+├── hello.py/
 │
 ├── .gitignore
 └── README.md
@@ -82,9 +79,9 @@ Ctrl + Shift + P
 
 ## 📚 Learning Topics
 
-### 01 — Basics
+### Week1
 
-Basic Python syntax and fundamental programming concepts.
+Basic Python  and  Advanced python concepts.
 
 Topics include:
 
